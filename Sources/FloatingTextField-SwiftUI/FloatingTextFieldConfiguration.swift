@@ -10,14 +10,18 @@
 import SwiftUI
 
 public class FloatingTextFieldConfiguration {
+	var textFieldFont: Font
 	var floatingPlaceholderColor: Color
 	var floatingPlaceholderFont: Font
+	
 	var underlineColor: Color
 	var underlineHeight: CGFloat
 	var underlinePadding: CGFloat
+	
 	var focusedColor: Color
 
 	init(){
+		self.textFieldFont = .system(.body)
 		self.floatingPlaceholderColor = Color(UIColor.placeholderText)
 		self.floatingPlaceholderFont = .system(.caption)
 		self.underlineColor = self.floatingPlaceholderColor
@@ -34,6 +38,9 @@ public extension FloatingTextFieldConfiguration {
 
 //MARK: Builder patter support with internal updates
 public extension FloatingTextFieldConfiguration {
+	
+	@discardableResult
+	func textFieldFont(_ textFieldFont: Font) -> Self { self.textFieldFont = textFieldFont; return self }
 	
 	@discardableResult
 	func floatingPlaceholderColor(_ floatingPlaceholderColor: Color) -> Self { self.floatingPlaceholderColor = floatingPlaceholderColor; return self }

@@ -17,6 +17,9 @@ extension Modifiers.FloatingUnderline {
 		var underlineColor: Color
 		var underlineHeight: CGFloat
 		var underlinePadding: CGFloat
+		
+		var leftView: AnyView
+		var rightView: AnyView
 
 		
 		init(floatingConfiguration: Modifiers.Floating.Configuration) {
@@ -24,6 +27,9 @@ extension Modifiers.FloatingUnderline {
 			self.underlineHeight = FloatingTextFieldConfiguration.shared.underlineHeight
 			self.underlinePadding = FloatingTextFieldConfiguration.shared.underlinePadding
 			self.floatingConfiguration = floatingConfiguration
+			
+			self.leftView = AnyView(erasing: EmptyView())
+			self.rightView = AnyView(erasing: EmptyView())
 		}
 		
 		public convenience init(placeHolder: String, text: Binding<String>) {
@@ -39,6 +45,12 @@ extension Modifiers.FloatingUnderline {
 		
 		@discardableResult
 		public func underlinePadding(_ underlinePadding: CGFloat) -> Self { self.underlinePadding = underlinePadding; return self }
+		
+		@discardableResult
+		public func leftView(_ leftView: AnyView) -> Self { self.leftView = leftView; return self }
+		
+		@discardableResult
+		public func rightView(_ rightView: AnyView) -> Self { self.rightView = rightView; return self }
 		
 		
 		@discardableResult
@@ -77,13 +89,18 @@ extension Modifiers {
 		
 		@ViewBuilder
 		public func body(content: Content) -> some View {
-			content
-				.floating(configuration.floatingConfiguration)
-				.padding(.bottom, configuration.underlinePadding)
-				.drawUnderLine(
-					color: configuration.underlineColor,
-					height: configuration.underlineHeight
-				)
+			HStack {
+				configuration.leftView
+				content
+					.floating(configuration.floatingConfiguration)
+				configuration.rightView
+			}
+			.font(configuration.floatingConfiguration.textFieldFont)
+			.padding(.bottom, configuration.underlinePadding)
+			.drawUnderLine(
+				color: configuration.underlineColor,
+				height: configuration.underlineHeight
+			)
 		}
 	}
 }

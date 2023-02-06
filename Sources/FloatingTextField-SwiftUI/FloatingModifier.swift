@@ -15,6 +15,7 @@ extension Modifiers.Floating {
 		var placeHolder: String
 		var text: Binding<String>
 		
+		var textFieldFont: Font
 		var floatingPlaceholderColor: Color
 		var floatingPlaceholderFont: Font
 		
@@ -22,9 +23,13 @@ extension Modifiers.Floating {
 			self.placeHolder = placeHolder
 			self.text = text
 			
+			self.textFieldFont = FloatingTextFieldConfiguration.shared.textFieldFont
 			self.floatingPlaceholderColor = FloatingTextFieldConfiguration.shared.floatingPlaceholderColor
 			self.floatingPlaceholderFont = FloatingTextFieldConfiguration.shared.floatingPlaceholderFont
 		}
+		
+		@discardableResult
+		public func textFieldFont(_ textFieldFont: Font) -> Self { self.textFieldFont = textFieldFont; return self }
 		
 		@discardableResult
 		public func floatingPlaceholderColor(_ floatingPlaceholderColor: Color) -> Self { self.floatingPlaceholderColor = floatingPlaceholderColor; return self }
@@ -38,7 +43,8 @@ public extension View {
 	
 	@ViewBuilder
 	func floating(_ configuration: Modifiers.Floating.Configuration) -> some View {
-		modifier(Modifiers.Floating(configuration: configuration))
+		self.font(configuration.textFieldFont)
+			.modifier(Modifiers.Floating(configuration: configuration))
 	}
 }
 

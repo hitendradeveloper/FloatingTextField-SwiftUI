@@ -33,6 +33,9 @@ class ContentViewModel: ObservableObject {
 	}
 	init(floatingUseCase: FloatingUseCase) {
 		self.floatingUseCase = floatingUseCase
+		
+		FloatingTextFieldConfiguration.shared
+			.textFieldFont(Font.title2)
 	}
 }
 
@@ -77,29 +80,78 @@ struct ContentView: View {
 	
 	
 	@ViewBuilder func floatingFocusedUnderlineTextFields() -> some View {
-		TextField("Name", text: $viewModel.name)
-			.floatingFocusedUnderline(
-				.init(placeHolder: "Name",
-					  text: $viewModel.name, id: "name")
-			)
 		
-		TextField("email", text: $viewModel.email)
-			.floatingFocusedUnderline(
-				.init(placeHolder: "email",
-					  text: $viewModel.email, id: "email")
-			)
+		Group {
+
+			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "Name",
+						text: $viewModel.name, id: "name")
+			let _ = config.floatingUnderlineConfiguration
+				.leftView({
+					AnyView(
+						Image(systemName: "person.fill")
+							.padding(.top)
+					)
+						
+				}())
+			
+			TextField("Name", text: $viewModel.name)
+				.floatingFocusedUnderline(
+					config
+				)
+		}
 		
-		TextField("flight", text: $viewModel.flight)
-			.floatingFocusedUnderline(
-				.init(placeHolder: "flight",
-					  text: $viewModel.flight, id: "flight")
-			)
+		Group {
+	
+			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "email", text: $viewModel.email, id: "email")
+			let _ = config.floatingUnderlineConfiguration
+				.leftView({
+					AnyView(
+						Image(systemName: "envelope.fill")
+							.padding(.top)
+					)
+				}())
+			
+			TextField("email", text: $viewModel.email)
+				.floatingFocusedUnderline(
+					config
+				)
+		}
 		
-		TextField("address", text: $viewModel.address)
-			.floatingFocusedUnderline(
-				.init(placeHolder: "address",
-					  text: $viewModel.address, id: "address")
-			)
+		Group {
+	
+			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "flight",
+																				 text: $viewModel.flight, id: "flight")
+			let _ = config.floatingUnderlineConfiguration
+				.rightView({
+					AnyView(
+						Image(systemName: "airplane")
+							.padding(.top)
+					)
+				}())
+			
+			TextField("flight", text: $viewModel.flight)
+				.floatingFocusedUnderline(
+					config
+				)
+		}
+		
+		Group {
+	
+			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "address",
+																				 text: $viewModel.address, id: "address")
+			let _ = config.floatingUnderlineConfiguration
+				.rightView({
+					AnyView(
+						Image(systemName: "mappin")
+							.padding(.top)
+					)
+				}())
+			
+			TextField("address", text: $viewModel.address)
+				.floatingFocusedUnderline(
+					config
+				)
+		}
 	}
 	
 	
