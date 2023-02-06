@@ -109,11 +109,11 @@ extension Modifiers {
 			Group {
 				if text.wrappedValue.count > 0 {
 					Text(text.wrappedValue.count > 0 ? placeholder : " ")
-						.transition(.asymmetric(insertion: .move(edge: .bottom), removal: .move(edge: .top)))
+						.transition(.move(edge: .bottom))
 						.animation(text.wrappedValue.count > 0 ? .easeIn : .easeOut, value: 1)
 				} else {
 					Text(text.wrappedValue.count > 0 ? placeholder : " ")
-						.transition(.asymmetric(insertion: .move(edge: .bottom), removal: .move(edge: .top)))
+						.transition(.move(edge: .bottom))
 						.animation(text.wrappedValue.count > 0 ? .easeIn : .easeOut, value: 1)
 				}
 			}
