@@ -16,7 +16,6 @@ class ContentViewModel: ObservableObject {
 	@Published var email: String = ""
 	@Published var flight: String = ""
 	@Published var address: String = ""
-	@Published var textfield: UITextField? = nil
 	
 	var floatingUseCase: FloatingUseCase
 	enum FloatingUseCase {
@@ -80,38 +79,30 @@ struct ContentView: View {
 	@ViewBuilder func floatingFocusedUnderlineTextFields() -> some View {
 		TextField("Name", text: $viewModel.name)
 			.padding(.bottom, 6)
-			.syncWithFocused(syncer: $viewModel.textfield)
-			.floatingUnderlineFocused(
+			.floatingFocusedUnderline(
 				.init(placeHolder: "Name",
-					  text: $viewModel.name,
-					  textField: $viewModel.textfield)
+					  text: $viewModel.name, id: "name")
 			)
 		
 		TextField("email", text: $viewModel.email)
 			.padding(.bottom, 6)
-			.syncWithFocused(syncer: $viewModel.textfield)
-			.floatingUnderlineFocused(
+			.floatingFocusedUnderline(
 				.init(placeHolder: "email",
-					  text: $viewModel.email,
-					  textField: $viewModel.textfield)
+					  text: $viewModel.email, id: "email")
 			)
 		
 		TextField("flight", text: $viewModel.flight)
 			.padding(.bottom, 6)
-			.syncWithFocused(syncer: $viewModel.textfield)
-			.floatingUnderlineFocused(
+			.floatingFocusedUnderline(
 				.init(placeHolder: "flight",
-					  text: $viewModel.flight,
-					  textField: $viewModel.textfield)
+					  text: $viewModel.flight, id: "flight")
 			)
 		
 		TextField("address", text: $viewModel.address)
 			.padding(.bottom, 6)
-			.syncWithFocused(syncer: $viewModel.textfield)
-			.floatingUnderlineFocused(
+			.floatingFocusedUnderline(
 				.init(placeHolder: "address",
-					  text: $viewModel.address,
-					  textField: $viewModel.textfield)
+					  text: $viewModel.address, id: "address")
 			)
 	}
 	
@@ -119,7 +110,6 @@ struct ContentView: View {
 	@ViewBuilder func floatingUnderlineTextFields() -> some View {
 		TextField("Name", text: $viewModel.name)
 			.padding(.bottom, 6)
-			.syncWithFocused(syncer: $viewModel.textfield)
 			.floatingUnderline(
 				.init(placeHolder: "Name",
 					  text: $viewModel.name)
@@ -127,7 +117,6 @@ struct ContentView: View {
 		
 		TextField("email", text: $viewModel.email)
 			.padding(.bottom, 6)
-			.syncWithFocused(syncer: $viewModel.textfield)
 			.floatingUnderline(
 				.init(placeHolder: "email",
 					  text: $viewModel.email)
@@ -135,7 +124,6 @@ struct ContentView: View {
 		
 		TextField("flight", text: $viewModel.flight)
 			.padding(.bottom, 6)
-			.syncWithFocused(syncer: $viewModel.textfield)
 			.floatingUnderline(
 				.init(placeHolder: "flight",
 					  text: $viewModel.flight)
@@ -143,7 +131,6 @@ struct ContentView: View {
 		
 		TextField("address", text: $viewModel.address)
 			.padding(.bottom, 6)
-			.syncWithFocused(syncer: $viewModel.textfield)
 			.floatingUnderline(
 				.init(placeHolder: "address",
 					  text: $viewModel.address)
@@ -153,7 +140,6 @@ struct ContentView: View {
 	@ViewBuilder func floatingTextFields() -> some View {
 		TextField("Name", text: $viewModel.name)
 			.padding(.bottom, 6)
-			.syncWithFocused(syncer: $viewModel.textfield)
 			.floating(
 				.init(placeHolder: "Name",
 					  text: $viewModel.name)
@@ -161,7 +147,6 @@ struct ContentView: View {
 		
 		TextField("email", text: $viewModel.email)
 			.padding(.bottom, 6)
-			.syncWithFocused(syncer: $viewModel.textfield)
 			.floating(
 				.init(placeHolder: "email",
 					  text: $viewModel.email)
@@ -169,7 +154,6 @@ struct ContentView: View {
 		
 		TextField("flight", text: $viewModel.flight)
 			.padding(.bottom, 6)
-			.syncWithFocused(syncer: $viewModel.textfield)
 			.floating(
 				.init(placeHolder: "flight",
 					  text: $viewModel.flight)
@@ -177,7 +161,7 @@ struct ContentView: View {
 		
 		TextField("address", text: $viewModel.address)
 			.padding(.bottom, 6)
-			.syncWithFocused(syncer: $viewModel.textfield)
+			.floatingID("address")
 			.floating(
 				.init(placeHolder: "address",
 					  text: $viewModel.address)

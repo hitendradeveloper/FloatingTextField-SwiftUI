@@ -16,33 +16,31 @@ extension Modifiers.FloatingFocusedUnderline {
 	public  class Configuration {
 		public var floatingUnderlineConfiguration: Modifiers.FloatingUnderline.Configuration
 		var focusedColor: Color
-		var textField: Binding<UITextField?>
-		
-		var isFirstResponder: Bool = false
+		var id: String
 
-		init(floatingUnderlineConfiguration: Modifiers.FloatingUnderline.Configuration, textField: Binding<UITextField?>) {
+		var isFirstResponderSelf: Bool {
+			guard let textField = UIResponder.currentFirstResponder as? UITextField else { return false }
+			guard let id = textField.identifier else { return false }
+			return self.id == id
+		}
+
+		init(floatingUnderlineConfiguration: Modifiers.FloatingUnderline.Configuration, id: UITextField.Identifier) {
 			
 			self.floatingUnderlineConfiguration = floatingUnderlineConfiguration
-			
-			self.textField = textField
 			self.focusedColor = Color.accentColor
+			self.id = id
 			
-			if let textField = textField.wrappedValue {
-				if textField.text == floatingUnderlineConfiguration.floatingConfiguration.text.wrappedValue &&
-					textField.placeholder == floatingUnderlineConfiguration.floatingConfiguration.placeHolder {
-					
-					self.floatingUnderlineConfiguration.underlineColor(focusedColor)
-				}
+			if self.isFirstResponderSelf {
+				self.floatingUnderlineConfiguration.underlineColor(focusedColor)
 			}
-			
 		}
 		
-		public convenience init(placeHolder: String, text: Binding<String>, textField: Binding<UITextField?>) {
+		public convenience init(placeHolder: String, text: Binding<String>, id: UITextField.Identifier) {
 			
 			let floatingConfiguation: Modifiers.Floating.Configuration = .init(placeHolder: placeHolder, text: text)
 			let floatingUnderlineConfiguration: Modifiers.FloatingUnderline.Configuration = .init(floatingConfiguration: floatingConfiguation)
 			
-			self.init(floatingUnderlineConfiguration: floatingUnderlineConfiguration, textField: textField)
+			self.init(floatingUnderlineConfiguration: floatingUnderlineConfiguration, id: id)
 			
 		}
 		
@@ -52,23 +50,20 @@ extension Modifiers.FloatingFocusedUnderline {
 }
 
 
-
 public extension View {
 	
 	@ViewBuilder
-	func floatingUnderlineFocused(_ configuration: Modifiers.FloatingFocusedUnderline.Configuration) -> some View {
+	func floatingFocusedUnderline(_ configuration: Modifiers.FloatingFocusedUnderline.Configuration) -> some View {
 		self
-			.syncWithFocused(syncer: configuration.textField)
+			.floatingID(configuration.id)
 			.modifier(Modifiers.FloatingFocusedUnderline(configuration: configuration))
 	}
 	
 	@ViewBuilder
-	func syncWithFocused(syncer: Binding<UITextField?>) -> some View {
+	func floatingID(_ id: String) -> some View {
 		self
 			.introspectTextField { introspectedTextField in
-				if introspectedTextField.isFirstResponder && introspectedTextField != syncer.wrappedValue {
-					syncer.wrappedValue = introspectedTextField
-				}
+				introspectedTextField.identifier = id
 			}
 	}
 }
@@ -89,9 +84,9 @@ extension Modifiers {
 		
 		@ViewBuilder
 		public func body(content: Content) -> some View {
-			let _ = print("configuration.isFirstResponder := \(configuration.isFirstResponder)")
 			content
 				.floatingUnderline(configuration.floatingUnderlineConfiguration)
 		}
 	}
 }
+

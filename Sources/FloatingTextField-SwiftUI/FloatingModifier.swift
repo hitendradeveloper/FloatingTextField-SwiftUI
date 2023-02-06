@@ -34,14 +34,12 @@ extension Modifiers.Floating {
 	}
 }
 
-
 public extension View {
 	
 	@ViewBuilder
 	func floating(_ configuration: Modifiers.Floating.Configuration) -> some View {
 		modifier(Modifiers.Floating(configuration: configuration))
 	}
-	
 }
 
 

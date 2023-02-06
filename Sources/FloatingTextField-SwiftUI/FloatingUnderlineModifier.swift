@@ -8,7 +8,6 @@
 //
 
 import SwiftUI
-import UIKit
 
 extension Modifiers.FloatingUnderline {
 	public  class Configuration {
@@ -45,6 +44,16 @@ public extension View {
 	func floatingUnderline(_ configuration: Modifiers.FloatingUnderline.Configuration) -> some View {
 		self
 			.modifier(Modifiers.FloatingUnderline(configuration: configuration))
+	}
+	
+	@ViewBuilder
+	fileprivate func drawUnderLine(color: Color, height: CGFloat) -> some View{
+		ZStack(alignment: .bottom) {
+			self
+			Rectangle()
+				.frame(height: height)
+				.foregroundColor(color)
+		}
 	}
 }
 
