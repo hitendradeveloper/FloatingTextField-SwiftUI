@@ -9,23 +9,23 @@
 
 import SwiftUI
 import UIKit
+import Combine
 
 extension Modifiers.Floating {
 	public class Configuration {
-		var placeHolder: String
-		var text: Binding<String>
 		
 		var textFieldFont: Font
 		var textFieldColor: Color
 		var floatingPlaceholderColor: Color
 		var floatingPlaceholderFont: Font
 		
+		var id: UITextField.Identifier
+		
 		var leftView: AnyView
 		var rightView: AnyView
 		
-		public init(placeHolder: String, text: Binding<String>) {
-			self.placeHolder = placeHolder
-			self.text = text
+		public init() {
+			self.id = "______" // this will be udpate on OnFocusConfigurable.configure
 			
 			self.textFieldFont = FloatingTextFieldConfiguration.shared.textFieldFont
 			self.textFieldColor = FloatingTextFieldConfiguration.shared.textFieldColor
@@ -56,24 +56,14 @@ extension Modifiers.Floating {
 		@discardableResult
 		public func rightView(_ rightView: AnyView) -> Self { self.rightView = rightView; return self }
 	}
+	
 }
-
 public extension View {
 	
 	@ViewBuilder
 	func floating(_ configuration: Modifiers.Floating.Configuration) -> some View {
 		self.font(configuration.textFieldFont)
 			.modifier(Modifiers.Floating(configuration: configuration))
-	}
-}
-
-extension View {
-	func animate(using animation: Animation = .easeInOut(duration: 1), _ action: @escaping () -> Void) -> some View {
-		onAppear {
-			withAnimation(animation) {
-				action()
-			}
-		}
 	}
 }
 
@@ -103,24 +93,39 @@ extension Modifiers {
 		}
 		
 		@ViewBuilder private func placeHolderViewIfNeeded() -> some View {
-			let text = configuration.text
-			let placeholder = configuration.placeHolder
-			
 			Group {
-				if text.wrappedValue.count > 0 {
-					Text(text.wrappedValue.count > 0 ? placeholder : " ")
+				if let textField = TextFieldStore.value(for: self.configuration.id),
+				   let text = textField.text,
+				   let placeholder = textField.placeholder,
+				   text.count > 0 {
+
+					Text(placeholder)
 						.transition(.move(edge: .bottom).combined(with: .opacity))
-						.animation(text.wrappedValue.count > 0 ? .easeIn : .easeOut, value: 1)
+						.animation(.easeIn, value: 1)
+					
 				} else {
-					Text(text.wrappedValue.count > 0 ? placeholder : " ")
+					Text(" ")
 						.transition(.move(edge: .bottom).combined(with: .opacity))
-						.animation(text.wrappedValue.count > 0 ? .easeIn : .easeOut, value: 1)
+						.animation(.easeOut, value: 1)
 				}
 			}
 			.font(configuration.floatingPlaceholderFont)
 			.foregroundColor(configuration.floatingPlaceholderColor)
 			.frame(maxWidth: .infinity, alignment: .leading)
+			
+			
 		}
+		
 	}
-	
+}
+
+extension Modifiers.Floating.Configuration: OnFocusChangeConfigurable {
+	public func configure(focusedConfiguration: Modifiers.Focused.Configuration) -> Self {
+		self.id = focusedConfiguration.id
+		if focusedConfiguration.isFocused {
+			self.textFieldColor = focusedConfiguration.focusedColor
+			self.floatingPlaceholderColor = focusedConfiguration.focusedColor
+		}
+		return self
+	}
 }
