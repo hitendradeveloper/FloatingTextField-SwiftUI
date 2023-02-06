@@ -13,12 +13,16 @@ extension Modifiers.FloatingUnderline {
 	public  class Configuration {
 		public var floatingConfiguration: Modifiers.Floating.Configuration
 		
+		
 		var underlineColor: Color
 		var underlineHeight: CGFloat
+		var underlinePadding: CGFloat
+
 		
 		init(floatingConfiguration: Modifiers.Floating.Configuration) {
-			self.underlineColor = floatingConfiguration.placeholderColor
-			self.underlineHeight = 1.0
+			self.underlineColor = FloatingTextFieldConfiguration.shared.underlineColor
+			self.underlineHeight = FloatingTextFieldConfiguration.shared.underlineHeight
+			self.underlinePadding = FloatingTextFieldConfiguration.shared.underlinePadding
 			self.floatingConfiguration = floatingConfiguration
 		}
 		
@@ -32,6 +36,10 @@ extension Modifiers.FloatingUnderline {
 		
 		@discardableResult
 		public func underlineHeight(_ underlineHeight: CGFloat) -> Self { self.underlineHeight = underlineHeight; return self }
+		
+		@discardableResult
+		public func underlinePadding(_ underlinePadding: CGFloat) -> Self { self.underlinePadding = underlinePadding; return self }
+		
 		
 		@discardableResult
 		public func floatingConfiguration(_ configuration: Modifiers.Floating.Configuration) -> Self { self.floatingConfiguration = configuration; return self }
@@ -71,6 +79,7 @@ extension Modifiers {
 		public func body(content: Content) -> some View {
 			content
 				.floating(configuration.floatingConfiguration)
+				.padding(.bottom, configuration.underlinePadding)
 				.drawUnderLine(
 					color: configuration.underlineColor,
 					height: configuration.underlineHeight

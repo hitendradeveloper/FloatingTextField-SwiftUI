@@ -15,22 +15,22 @@ extension Modifiers.Floating {
 		var placeHolder: String
 		var text: Binding<String>
 		
-		var placeholderColor: Color
-		var placeholderFont: Font
+		var floatingPlaceholderColor: Color
+		var floatingPlaceholderFont: Font
 		
 		public init(placeHolder: String, text: Binding<String>) {
 			self.placeHolder = placeHolder
 			self.text = text
 			
-			self.placeholderColor = Color(UIColor.placeholderText)
-			self.placeholderFont = .system(.caption)
+			self.floatingPlaceholderColor = FloatingTextFieldConfiguration.shared.floatingPlaceholderColor
+			self.floatingPlaceholderFont = FloatingTextFieldConfiguration.shared.floatingPlaceholderFont
 		}
 		
 		@discardableResult
-		public func placeholderColor(_ placeholderColor: Color) -> Self { self.placeholderColor = placeholderColor; return self }
+		public func floatingPlaceholderColor(_ floatingPlaceholderColor: Color) -> Self { self.floatingPlaceholderColor = floatingPlaceholderColor; return self }
 		
 		@discardableResult
-		public func placeholderFont(_ placeholderFont: Font) -> Self { self.placeholderFont = placeholderFont; return self }
+		public func floatingPlaceholderFont(_ floatingPlaceholderFont: Font) -> Self { self.floatingPlaceholderFont = floatingPlaceholderFont; return self }
 	}
 }
 
@@ -77,8 +77,8 @@ extension Modifiers {
 						.animation(text.wrappedValue.count > 0 ? .easeIn : .easeOut, value: text.wrappedValue.count > 0)
 				}
 			}
-			.font(configuration.placeholderFont)
-			.foregroundColor(configuration.placeholderColor)
+			.font(configuration.floatingPlaceholderFont)
+			.foregroundColor(configuration.floatingPlaceholderColor)
 			.frame(maxWidth: .infinity, alignment: .leading)
 		}
 	}

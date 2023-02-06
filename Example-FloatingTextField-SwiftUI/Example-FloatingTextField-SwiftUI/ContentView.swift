@@ -78,28 +78,24 @@ struct ContentView: View {
 	
 	@ViewBuilder func floatingFocusedUnderlineTextFields() -> some View {
 		TextField("Name", text: $viewModel.name)
-			.padding(.bottom, 6)
 			.floatingFocusedUnderline(
 				.init(placeHolder: "Name",
 					  text: $viewModel.name, id: "name")
 			)
 		
 		TextField("email", text: $viewModel.email)
-			.padding(.bottom, 6)
 			.floatingFocusedUnderline(
 				.init(placeHolder: "email",
 					  text: $viewModel.email, id: "email")
 			)
 		
 		TextField("flight", text: $viewModel.flight)
-			.padding(.bottom, 6)
 			.floatingFocusedUnderline(
 				.init(placeHolder: "flight",
 					  text: $viewModel.flight, id: "flight")
 			)
 		
 		TextField("address", text: $viewModel.address)
-			.padding(.bottom, 6)
 			.floatingFocusedUnderline(
 				.init(placeHolder: "address",
 					  text: $viewModel.address, id: "address")
@@ -109,28 +105,24 @@ struct ContentView: View {
 	
 	@ViewBuilder func floatingUnderlineTextFields() -> some View {
 		TextField("Name", text: $viewModel.name)
-			.padding(.bottom, 6)
 			.floatingUnderline(
 				.init(placeHolder: "Name",
 					  text: $viewModel.name)
 			)
 		
 		TextField("email", text: $viewModel.email)
-			.padding(.bottom, 6)
 			.floatingUnderline(
 				.init(placeHolder: "email",
 					  text: $viewModel.email)
 			)
 		
 		TextField("flight", text: $viewModel.flight)
-			.padding(.bottom, 6)
 			.floatingUnderline(
 				.init(placeHolder: "flight",
 					  text: $viewModel.flight)
 			)
 		
 		TextField("address", text: $viewModel.address)
-			.padding(.bottom, 6)
 			.floatingUnderline(
 				.init(placeHolder: "address",
 					  text: $viewModel.address)
@@ -139,28 +131,24 @@ struct ContentView: View {
 	
 	@ViewBuilder func floatingTextFields() -> some View {
 		TextField("Name", text: $viewModel.name)
-			.padding(.bottom, 6)
 			.floating(
 				.init(placeHolder: "Name",
 					  text: $viewModel.name)
 			)
 		
 		TextField("email", text: $viewModel.email)
-			.padding(.bottom, 6)
 			.floating(
 				.init(placeHolder: "email",
 					  text: $viewModel.email)
 			)
 		
 		TextField("flight", text: $viewModel.flight)
-			.padding(.bottom, 6)
 			.floating(
 				.init(placeHolder: "flight",
 					  text: $viewModel.flight)
 			)
 		
 		TextField("address", text: $viewModel.address)
-			.padding(.bottom, 6)
 			.floatingID("address")
 			.floating(
 				.init(placeHolder: "address",

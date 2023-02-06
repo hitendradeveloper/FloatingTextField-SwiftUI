@@ -11,7 +11,6 @@ import SwiftUI
 import UIKit
 import Introspect
 
-
 extension Modifiers.FloatingFocusedUnderline {
 	public  class Configuration {
 		public var floatingUnderlineConfiguration: Modifiers.FloatingUnderline.Configuration
@@ -27,7 +26,7 @@ extension Modifiers.FloatingFocusedUnderline {
 		init(floatingUnderlineConfiguration: Modifiers.FloatingUnderline.Configuration, id: UITextField.Identifier) {
 			
 			self.floatingUnderlineConfiguration = floatingUnderlineConfiguration
-			self.focusedColor = Color.accentColor
+			self.focusedColor = FloatingTextFieldConfiguration.shared.focusedColor
 			self.id = id
 			
 			if self.isFirstResponderSelf {
