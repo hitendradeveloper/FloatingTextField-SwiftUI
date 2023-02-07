@@ -31,6 +31,8 @@ extension Modifiers.FloatingFocusedUnderline {
 			
 			if self.isFirstResponderSelf {
 				self.floatingUnderlineConfiguration.underlineColor(focusedColor)
+				self.floatingUnderlineConfiguration.floatingConfiguration.floatingPlaceholderColor(focusedColor)
+				self.floatingUnderlineConfiguration.floatingConfiguration.textFieldColor(focusedColor)
 			}
 		}
 		
@@ -84,7 +86,7 @@ extension Modifiers {
 		@ViewBuilder
 		public func body(content: Content) -> some View {
 			content
-				.floatingUnderline(configuration.floatingUnderlineConfiguration)
+				.floatingUnderline(configuration.floatingUnderlineConfiguration) //Underline modifier
 		}
 	}
 }

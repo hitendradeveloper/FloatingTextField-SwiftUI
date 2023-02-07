@@ -14,8 +14,9 @@ import FloatingTextField_SwiftUI
 class ContentViewModel: ObservableObject {
 	@Published var name: String = ""
 	@Published var email: String = ""
-	@Published var flight: String = ""
-	@Published var address: String = ""
+	@Published var password: String = ""
+	
+	@Published var isShowingPassword: Bool = false
 	
 	var floatingUseCase: FloatingUseCase
 	enum FloatingUseCase {
@@ -36,6 +37,7 @@ class ContentViewModel: ObservableObject {
 		
 		FloatingTextFieldConfiguration.shared
 			.textFieldFont(Font.title2)
+			.floatingPlaceholderFont(.body)
 	}
 }
 
@@ -86,12 +88,11 @@ struct ContentView: View {
 			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "Name",
 						text: $viewModel.name, id: "name")
 			let _ = config.floatingUnderlineConfiguration
+				.floatingConfiguration
 				.leftView({
 					AnyView(
 						Image(systemName: "person.fill")
-							.padding(.top)
 					)
-						
 				}())
 			
 			TextField("Name", text: $viewModel.name)
@@ -102,14 +103,15 @@ struct ContentView: View {
 		
 		Group {
 	
-			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "email", text: $viewModel.email, id: "email")
+			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "Email", text: $viewModel.email, id: "email")
 			let _ = config.floatingUnderlineConfiguration
+				.floatingConfiguration
 				.leftView({
 					AnyView(
 						Image(systemName: "envelope.fill")
-							.padding(.top)
 					)
 				}())
+			
 			
 			TextField("email", text: $viewModel.email)
 				.floatingFocusedUnderline(
@@ -119,36 +121,35 @@ struct ContentView: View {
 		
 		Group {
 	
-			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "flight",
-																				 text: $viewModel.flight, id: "flight")
+			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "Password",
+																				 text: $viewModel.password, id: "password")
 			let _ = config.floatingUnderlineConfiguration
+				.floatingConfiguration
+				.leftView({
+					AnyView(
+						Image(systemName: viewModel.isShowingPassword ? "lock.open.fill" : "lock.fill")
+					)
+				}())
 				.rightView({
 					AnyView(
-						Image(systemName: "airplane")
-							.padding(.top)
+						Button(action: {
+							withAnimation {
+								self.viewModel.isShowingPassword.toggle()
+							}
+						}, label: {
+							Image(systemName: viewModel.isShowingPassword ? "eye.slash.fill" : "eye.fill")
+						})
 					)
 				}())
 			
-			TextField("flight", text: $viewModel.flight)
-				.floatingFocusedUnderline(
-					config
-				)
-		}
-		
-		Group {
-	
-			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "address",
-																				 text: $viewModel.address, id: "address")
-			let _ = config.floatingUnderlineConfiguration
-				.rightView({
-					AnyView(
-						Image(systemName: "mappin")
-							.padding(.top)
-					)
-				}())
-			
-			TextField("address", text: $viewModel.address)
-				.floatingFocusedUnderline(
+			Group {
+				if self.viewModel.isShowingPassword {
+					TextField("Password", text: $viewModel.password)
+				}else {
+					SecureField("Password", text: $viewModel.password)
+				}
+				
+			}.floatingFocusedUnderline(
 					config
 				)
 		}
@@ -168,16 +169,10 @@ struct ContentView: View {
 					  text: $viewModel.email)
 			)
 		
-		TextField("flight", text: $viewModel.flight)
+		SecureField("Password", text: $viewModel.password)
 			.floatingUnderline(
-				.init(placeHolder: "flight",
-					  text: $viewModel.flight)
-			)
-		
-		TextField("address", text: $viewModel.address)
-			.floatingUnderline(
-				.init(placeHolder: "address",
-					  text: $viewModel.address)
+				.init(placeHolder: "Password",
+					  text: $viewModel.password)
 			)
 	}
 	
@@ -194,18 +189,12 @@ struct ContentView: View {
 					  text: $viewModel.email)
 			)
 		
-		TextField("flight", text: $viewModel.flight)
+		SecureField("Password", text: $viewModel.password)
 			.floating(
-				.init(placeHolder: "flight",
-					  text: $viewModel.flight)
+				.init(placeHolder: "Password",
+					  text: $viewModel.password)
 			)
 		
-		TextField("address", text: $viewModel.address)
-			.floatingID("address")
-			.floating(
-				.init(placeHolder: "address",
-					  text: $viewModel.address)
-			)
 	}
 }
 
