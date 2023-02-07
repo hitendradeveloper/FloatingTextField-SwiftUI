@@ -67,3 +67,29 @@ public extension FloatingTextFieldConfiguration {
 	func focusedColor(_ focusedColor: Color) -> Self { self.focusedColor = focusedColor; return self }
 	
 }
+
+class TextFieldStore {
+	class Weak<T: AnyObject> {
+	  weak var rawValue : T?
+	  init (value: T) { self.rawValue = value }
+	}
+	
+	typealias Key = UITextField.Identifier
+	
+	typealias RawValue = UITextField
+	typealias Value = Weak<RawValue>
+	
+	private static var store: TextFieldStore = TextFieldStore()
+	
+	private var storage: [Key: Value] = [:]
+	
+	static func insert(_ value: RawValue, `for` key: Key) {
+		let weakStorage = Weak(value: value)
+		store.storage[key] = weakStorage
+	}
+	
+	static func value(`for` key: Key) -> RawValue? {
+		let weakStorage = store.storage[key]
+		return weakStorage?.rawValue
+	}
+}

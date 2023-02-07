@@ -1,5 +1,5 @@
 //
-//  FloatingUnderlineModifier.swift
+//  UnderlineModifier.swift
 //  FloatingTextField-SwiftUI
 //
 //  Created by Hitendra Solanki on 05/02/23.
@@ -9,26 +9,17 @@
 
 import SwiftUI
 
-extension Modifiers.FloatingUnderline {
+extension Modifiers.Underline {
 	public  class Configuration {
-		public var floatingConfiguration: Modifiers.Floating.Configuration
-		
-		
 		var underlineColor: Color
 		var underlineHeight: CGFloat
 		var underlinePadding: CGFloat
 
 		
-		init(floatingConfiguration: Modifiers.Floating.Configuration) {
+		public init() {
 			self.underlineColor = FloatingTextFieldConfiguration.shared.underlineColor
 			self.underlineHeight = FloatingTextFieldConfiguration.shared.underlineHeight
 			self.underlinePadding = FloatingTextFieldConfiguration.shared.underlinePadding
-			self.floatingConfiguration = floatingConfiguration
-		}
-		
-		public convenience init(placeHolder: String, text: Binding<String>) {
-			let floatingConfiguation: Modifiers.Floating.Configuration = .init(placeHolder: placeHolder, text: text)
-			self.init(floatingConfiguration: floatingConfiguation)
 		}
 		
 		@discardableResult
@@ -40,17 +31,15 @@ extension Modifiers.FloatingUnderline {
 		@discardableResult
 		public func underlinePadding(_ underlinePadding: CGFloat) -> Self { self.underlinePadding = underlinePadding; return self }
 		
-		@discardableResult
-		public func floatingConfiguration(_ configuration: Modifiers.Floating.Configuration) -> Self { self.floatingConfiguration = configuration; return self }
 	}
 }
 
 public extension View {
 	
 	@ViewBuilder
-	func floatingUnderline(_ configuration: Modifiers.FloatingUnderline.Configuration) -> some View {
+	func floatingUnderline(_ configuration: Modifiers.Underline.Configuration) -> some View {
 		self
-			.modifier(Modifiers.FloatingUnderline(configuration: configuration))
+			.modifier(Modifiers.Underline(configuration: configuration))
 	}
 	
 	@ViewBuilder
@@ -66,7 +55,7 @@ public extension View {
 
 
 extension Modifiers {
-	public struct FloatingUnderline: ViewModifier {
+	public struct Underline: ViewModifier {
 		
 		var configuration: Configuration
 		
@@ -77,7 +66,6 @@ extension Modifiers {
 		@ViewBuilder
 		public func body(content: Content) -> some View {
 			content
-				.floating(configuration.floatingConfiguration) //Floating modifier
 				.padding(.bottom, configuration.underlinePadding)
 				.drawUnderLine(
 					color: configuration.underlineColor,
@@ -87,3 +75,11 @@ extension Modifiers {
 	}
 }
 
+extension Modifiers.Underline.Configuration: OnFocusChangeConfigurable {
+	public func configure(focusedConfiguration: Modifiers.Focused.Configuration) -> Self {
+		if focusedConfiguration.isFocused {
+			self.underlineColor = focusedConfiguration.focusedColor
+		}
+		return self
+	}
+}

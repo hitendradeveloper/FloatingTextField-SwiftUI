@@ -21,13 +21,11 @@ class ContentViewModel: ObservableObject {
 	var floatingUseCase: FloatingUseCase
 	enum FloatingUseCase {
 		case floating
-		case floatingUnderline
 		case floatingFocusedUnderline
 		
 		var screenTitle: String {
 			switch self {
 			case .floating: return "Floating Only"
-			case .floatingUnderline: return "Underline & Floating"
 			case .floatingFocusedUnderline: return "Focused & Floating"
 			}
 		}
@@ -49,6 +47,7 @@ struct ContentView: View {
 	
 	
 	@ObservedObject var viewModel: ContentViewModel
+	
 	init(viewModel: ContentViewModel) {
 		self.viewModel = viewModel
 	}
@@ -61,9 +60,6 @@ struct ContentView: View {
 					switch viewModel.floatingUseCase {
 					case .floatingFocusedUnderline:
 						floatingFocusedUnderlineTextFields()
-						
-					case .floatingUnderline:
-						floatingUnderlineTextFields()
 						
 					case .floating:
 						floatingTextFields()
@@ -82,118 +78,193 @@ struct ContentView: View {
 	
 	
 	@ViewBuilder func floatingFocusedUnderlineTextFields() -> some View {
-		
 		Group {
-
-			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "Name",
-						text: $viewModel.name, id: "name")
-			let _ = config.floatingUnderlineConfiguration
-				.floatingConfiguration
-				.leftView({
-					AnyView(
-						Image(systemName: "person.fill")
-					)
-				}())
+			let placeHolder = "Name"
+			let binding = $viewModel.name.animation()
+			let id = placeHolder + self.viewModel.floatingUseCase.screenTitle
 			
-			TextField("Name", text: $viewModel.name)
-				.floatingFocusedUnderline(
-					config
+			let focusedConfig: Modifiers.Focused.Configuration = .init(id: id)
+						
+			TextField(placeHolder, text: binding)
+				.floatingFocused(focusedConfig)
+				.floating(
+					.init()
+					.configure(focusedConfiguration: focusedConfig)
+				)
+				.floatingUnderline(
+					.init()
+					.configure(focusedConfiguration: focusedConfig)
 				)
 		}
 		
 		Group {
-	
-			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "Email", text: $viewModel.email, id: "email")
-			let _ = config.floatingUnderlineConfiguration
-				.floatingConfiguration
-				.leftView({
-					AnyView(
-						Image(systemName: "envelope.fill")
-					)
-				}())
+			let placeHolder = "Email"
+			let binding = $viewModel.email.animation()
+			let id = placeHolder + self.viewModel.floatingUseCase.screenTitle
 			
-			
-			TextField("email", text: $viewModel.email)
-				.floatingFocusedUnderline(
-					config
+			let focusedConfig: Modifiers.Focused.Configuration = .init(id: id)
+						
+			TextField(placeHolder, text: binding)
+				.floatingFocused(focusedConfig)
+				.floating(
+					.init()
+					.configure(focusedConfiguration: focusedConfig)
+				)
+				.floatingUnderline(
+					.init()
+					.configure(focusedConfiguration: focusedConfig)
 				)
 		}
 		
 		Group {
-	
-			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "Password",
-																				 text: $viewModel.password, id: "password")
-			let _ = config.floatingUnderlineConfiguration
-				.floatingConfiguration
-				.leftView({
-					AnyView(
-						Image(systemName: viewModel.isShowingPassword ? "lock.open.fill" : "lock.fill")
-					)
-				}())
-				.rightView({
-					AnyView(
-						Button(action: {
-							withAnimation {
-								self.viewModel.isShowingPassword.toggle()
-							}
-						}, label: {
-							Image(systemName: viewModel.isShowingPassword ? "eye.slash.fill" : "eye.fill")
-						})
-					)
-				}())
+			let placeHolder = "Password"
+			let binding = $viewModel.password.animation()
+			let id = placeHolder + self.viewModel.floatingUseCase.screenTitle
 			
-			Group {
-				if self.viewModel.isShowingPassword {
-					TextField("Password", text: $viewModel.password)
-				}else {
-					SecureField("Password", text: $viewModel.password)
-				}
-				
-			}.floatingFocusedUnderline(
-					config
+			let focusedConfig: Modifiers.Focused.Configuration = .init(id: id)
+						
+			SecureField(placeHolder, text: binding)
+				.floatingFocused(focusedConfig)
+				.floating(
+					.init()
+					.configure(focusedConfiguration: focusedConfig)
+				)
+				.floatingUnderline(
+					.init()
+					.configure(focusedConfiguration: focusedConfig)
 				)
 		}
+		
+//		Group {
+//
+//			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "Name",
+//						text: $viewModel.name, id: "name")
+//			let _ = config.floatingUnderlineConfiguration
+//				.floatingConfiguration
+//				.leftView({
+//					AnyView(
+//						Image(systemName: "person.fill")
+//					)
+//				}())
+//
+//			TextField("Name", text: $viewModel.name.animation())
+//				.floatingFocusedUnderline(
+//					config
+//				)
+//		}
+//
+//		Group {
+//
+//			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "Email", text: $viewModel.email, id: "email")
+//			let _ = config.floatingUnderlineConfiguration
+//				.floatingConfiguration
+//				.leftView({
+//					AnyView(
+//						Image(systemName: "envelope.fill")
+//					)
+//				}())
+//
+//
+//			TextField("email", text: $viewModel.email.animation())
+//				.floatingFocusedUnderline(
+//					config
+//				)
+//		}
+//
+//		Group {
+//
+//			let config: Modifiers.FloatingFocusedUnderline.Configuration = .init(placeHolder: "Password",
+//																				 text: $viewModel.password, id: "password")
+//			let _ = config.floatingUnderlineConfiguration
+//				.floatingConfiguration
+//				.leftView({
+//					AnyView(
+//						Image(systemName: viewModel.isShowingPassword ? "lock.open.fill" : "lock.fill")
+//					)
+//				}())
+//				.rightView({
+//					AnyView(
+//						Button(action: {
+//							withAnimation {
+//								self.viewModel.isShowingPassword.toggle()
+//							}
+//						}, label: {
+//							Image(systemName: viewModel.isShowingPassword ? "eye.slash.fill" : "eye.fill")
+//						})
+//					)
+//				}())
+//
+//			Group {
+//				if self.viewModel.isShowingPassword {
+//					TextField("Password", text: $viewModel.password.animation())
+//				}else {
+//					SecureField("Password", text: $viewModel.password.animation())
+//				}
+//
+//			}.floatingFocusedUnderline(
+//					config
+//				)
+//		}
 	}
 	
-	
-	@ViewBuilder func floatingUnderlineTextFields() -> some View {
-		TextField("Name", text: $viewModel.name)
-			.floatingUnderline(
-				.init(placeHolder: "Name",
-					  text: $viewModel.name)
-			)
-		
-		TextField("email", text: $viewModel.email)
-			.floatingUnderline(
-				.init(placeHolder: "email",
-					  text: $viewModel.email)
-			)
-		
-		SecureField("Password", text: $viewModel.password)
-			.floatingUnderline(
-				.init(placeHolder: "Password",
-					  text: $viewModel.password)
-			)
-	}
 	
 	@ViewBuilder func floatingTextFields() -> some View {
-		TextField("Name", text: $viewModel.name)
-			.floating(
-				.init(placeHolder: "Name",
-					  text: $viewModel.name)
-			)
+		Group {
+			let placeHolder = "Name"
+			let binding = $viewModel.name.animation()
+			let id = placeHolder + self.viewModel.floatingUseCase.screenTitle
+			
+			let focusedConfig: Modifiers.Focused.Configuration = .init(id: id)
+						
+			TextField(placeHolder, text: binding)
+//				.floatingFocused(focusedConfig)
+				.floating(
+					.init()
+					.configure(focusedConfiguration: focusedConfig)
+				)
+//				.floatingUnderline(
+//					.init()
+//					.configure(focusedConfiguration: focusedConfig)
+//				)
+		}
 		
-		TextField("email", text: $viewModel.email)
-			.floating(
-				.init(placeHolder: "email",
-					  text: $viewModel.email)
-			)
+		Group {
+			let placeHolder = "Email"
+			let binding = $viewModel.email.animation()
+			let id = placeHolder + self.viewModel.floatingUseCase.screenTitle
+			
+			let focusedConfig: Modifiers.Focused.Configuration = .init(id: id)
+						
+			TextField(placeHolder, text: binding)
+//				.floatingFocused(focusedConfig)
+				.floating(
+					.init()
+					.configure(focusedConfiguration: focusedConfig)
+				)
+//				.floatingUnderline(
+//					.init()
+//					.configure(focusedConfiguration: focusedConfig)
+//				)
+		}
 		
-		SecureField("Password", text: $viewModel.password)
-			.floating(
-				.init(placeHolder: "Password",
-					  text: $viewModel.password)
-			)
+		Group {
+			let placeHolder = "Password"
+			let binding = $viewModel.password.animation()
+			let id = placeHolder + self.viewModel.floatingUseCase.screenTitle
+			
+			let focusedConfig: Modifiers.Focused.Configuration = .init(id: id)
+						
+			SecureField(placeHolder, text: binding)
+//				.floatingFocused(focusedConfig)
+				.floating(
+					.init()
+					.configure(focusedConfiguration: focusedConfig)
+				)
+//				.floatingUnderline(
+//					.init()
+//					.configure(focusedConfiguration: focusedConfig)
+//				)
+		}
 		
 	}
 }

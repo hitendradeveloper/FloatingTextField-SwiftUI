@@ -10,3 +10,6 @@
 
 public enum Modifiers {}
 
+public protocol OnFocusChangeConfigurable: AnyObject {
+	func configure(focusedConfiguration: Modifiers.Focused.Configuration) -> Self
+}

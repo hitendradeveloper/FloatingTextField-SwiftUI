@@ -9,12 +9,12 @@
 
 import UIKit
 
-public extension UITextField {
+extension UITextField {
 	struct TextFieldKeys {
-		static var identifier : String = "UITextField.TextFieldKeys.identifier"
+		static var identifier : String = "com.medium.@hitendrahckr.twitter.@hitendrahckr.name-hitendra-solanki.UITextField.TextFieldKeys.identifier"
 	}
 	
-	typealias Identifier = String
+	public typealias Identifier = String
 	var identifier: Identifier?  {
 		get {
 			let value = objc_getAssociatedObject(self, &TextFieldKeys.identifier) as? Identifier
