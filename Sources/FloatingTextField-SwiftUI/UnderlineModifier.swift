@@ -17,9 +17,9 @@ extension Modifiers.Underline {
 
 		
 		public init() {
-			self.underlineColor = FloatingTextFieldConfiguration.shared.underlineColor
-			self.underlineHeight = FloatingTextFieldConfiguration.shared.underlineHeight
-			self.underlinePadding = FloatingTextFieldConfiguration.shared.underlinePadding
+			self.underlineColor = FloatingTextFieldAppearance.shared.underlineColor
+			self.underlineHeight = FloatingTextFieldAppearance.shared.underlineHeight
+			self.underlinePadding = FloatingTextFieldAppearance.shared.underlinePadding
 		}
 		
 		@discardableResult

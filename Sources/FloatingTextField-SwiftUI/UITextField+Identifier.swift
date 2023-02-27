@@ -11,7 +11,7 @@ import UIKit
 
 extension UITextField {
 	struct TextFieldKeys {
-		static var identifier : String = "com.medium.@hitendrahckr.twitter.@hitendrahckr.name-hitendra-solanki.UITextField.TextFieldKeys.identifier"
+		static var identifier : String = "com.medium:@hitendrahckr.twitter:@hitendrahckr.name-hitendra-solanki.UITextField.TextFieldKeys.identifier"
 	}
 	
 	public typealias Identifier = String

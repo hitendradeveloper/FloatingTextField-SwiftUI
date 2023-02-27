@@ -41,7 +41,7 @@ extension Modifiers.Focused {
 		}
 
 		public init(id: UITextField.Identifier) {
-			self.focusedColor = FloatingTextFieldConfiguration.shared.focusedColor
+			self.focusedColor = FloatingTextFieldAppearance.shared.focusedColor
 			self.id = id
 		}
 		

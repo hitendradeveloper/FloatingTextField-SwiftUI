@@ -17,7 +17,11 @@ extension Modifiers.Floating {
 		var textFieldFont: Font
 		var textFieldColor: Color
 		var floatingPlaceholderColor: Color
+		var floatingPlaceholderBackgroundColor: Color
 		var floatingPlaceholderFont: Font
+		var floatingPlaceHolderPadding: CGFloat
+		var floatingPlaceHolderLeadingPadding: CGFloat
+		
 		
 		var id: UITextField.Identifier
 		
@@ -27,10 +31,13 @@ extension Modifiers.Floating {
 		public init() {
 			self.id = "______" // this will be udpate on OnFocusConfigurable.configure
 			
-			self.textFieldFont = FloatingTextFieldConfiguration.shared.textFieldFont
-			self.textFieldColor = FloatingTextFieldConfiguration.shared.textFieldColor
-			self.floatingPlaceholderColor = FloatingTextFieldConfiguration.shared.floatingPlaceholderColor
-			self.floatingPlaceholderFont = FloatingTextFieldConfiguration.shared.floatingPlaceholderFont
+			self.textFieldFont = FloatingTextFieldAppearance.shared.textFieldFont
+			self.textFieldColor = FloatingTextFieldAppearance.shared.textFieldColor
+			self.floatingPlaceholderColor = FloatingTextFieldAppearance.shared.floatingPlaceholderColor
+			self.floatingPlaceholderBackgroundColor = FloatingTextFieldAppearance.shared.floatingPlaceholderBackgroundColor
+			self.floatingPlaceholderFont = FloatingTextFieldAppearance.shared.floatingPlaceholderFont
+			self.floatingPlaceHolderPadding = FloatingTextFieldAppearance.shared.floatingPlaceHolderPadding
+			self.floatingPlaceHolderLeadingPadding = FloatingTextFieldAppearance.shared.floatingPlaceHolderLeadingPadding
 			
 			self.leftView = AnyView(erasing: EmptyView())
 			self.rightView = AnyView(erasing: EmptyView())
@@ -47,8 +54,16 @@ extension Modifiers.Floating {
 		public func floatingPlaceholderColor(_ floatingPlaceholderColor: Color) -> Self { self.floatingPlaceholderColor = floatingPlaceholderColor; return self }
 		
 		@discardableResult
+		public func floatingPlaceholderBackgroundColor(_ floatingPlaceholderBackgroundColor: Color) -> Self { self.floatingPlaceholderBackgroundColor = floatingPlaceholderBackgroundColor; return self }
+		
+		@discardableResult
 		public func floatingPlaceholderFont(_ floatingPlaceholderFont: Font) -> Self { self.floatingPlaceholderFont = floatingPlaceholderFont; return self }
 		
+		@discardableResult
+		public func floatingPlaceHolderPadding(_ floatingPlaceHolderPadding: CGFloat) -> Self { self.floatingPlaceHolderPadding = floatingPlaceHolderPadding; return self }
+		
+		@discardableResult
+		public func floatingPlaceHolderLeadingPadding(_ floatingPlaceHolderLeadingPadding: CGFloat) -> Self { self.floatingPlaceHolderLeadingPadding = floatingPlaceHolderLeadingPadding; return self }
 		
 		@discardableResult
 		public func leftView(_ leftView: AnyView) -> Self { self.leftView = leftView; return self }
@@ -62,7 +77,8 @@ public extension View {
 	
 	@ViewBuilder
 	func floating(_ configuration: Modifiers.Floating.Configuration) -> some View {
-		self.font(configuration.textFieldFont)
+		self
+			.font(configuration.textFieldFont)
 			.modifier(Modifiers.Floating(configuration: configuration))
 	}
 }
@@ -80,7 +96,9 @@ extension Modifiers {
 		public func body(content: Content) -> some View {
 			VStack(spacing: 0) {
 				placeHolderViewIfNeeded()
-					.padding(.bottom, 2)
+					.background(configuration.floatingPlaceholderBackgroundColor)
+					.padding(.bottom, configuration.floatingPlaceHolderPadding)
+					.padding(.leading, configuration.floatingPlaceHolderLeadingPadding)
 				HStack {
 					configuration.leftView
 					content
@@ -88,7 +106,6 @@ extension Modifiers {
 				}
 				.font(configuration.textFieldFont)
 				.foregroundColor(configuration.textFieldColor)
-
 			}
 		}
 		
@@ -112,10 +129,7 @@ extension Modifiers {
 			.font(configuration.floatingPlaceholderFont)
 			.foregroundColor(configuration.floatingPlaceholderColor)
 			.frame(maxWidth: .infinity, alignment: .leading)
-			
-			
 		}
-		
 	}
 }
 

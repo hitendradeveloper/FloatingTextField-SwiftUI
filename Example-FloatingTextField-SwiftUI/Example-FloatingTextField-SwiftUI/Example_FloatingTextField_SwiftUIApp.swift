@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct Example_FloatingTextField_SwiftUIApp: App {
 	var tab1ViewModel: ContentViewModel = .init(floatingUseCase: .floatingFocusedUnderline)
+	var tab2ViewModel: ContentViewModel = .init(floatingUseCase: .floatingFocusedBorder)
 	var tab3ViewModel: ContentViewModel = .init(floatingUseCase: .floating)
 	
 	var body: some Scene {
@@ -18,6 +19,11 @@ struct Example_FloatingTextField_SwiftUIApp: App {
 				ContentView(viewModel: tab1ViewModel)
 					.tabItem {
 						Label(tab1ViewModel.floatingUseCase.screenTitle, systemImage: "text.line.first.and.arrowtriangle.forward")
+					}
+				
+				ContentView(viewModel: tab2ViewModel)
+					.tabItem {
+						Label(tab2ViewModel.floatingUseCase.screenTitle, systemImage: "character.textbox")
 					}
 
 				ContentView(viewModel: tab3ViewModel)
