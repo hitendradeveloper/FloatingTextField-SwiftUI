@@ -29,6 +29,8 @@ public final class FloatingTextFieldAppearance {
 	var borderPadding: CGFloat
 	
 	var focusedColor: Color
+	
+	var allowsFloatingPlaceholder: Bool
 
 	init(){
 		self.textFieldFont = .system(.body)
@@ -49,6 +51,8 @@ public final class FloatingTextFieldAppearance {
 		self.borderPadding = 10
 		
 		self.focusedColor = Color.accentColor
+		
+		self.allowsFloatingPlaceholder = true
 	}
 }
 
@@ -103,6 +107,8 @@ public extension FloatingTextFieldAppearance {
 	@discardableResult
 	func focusedColor(_ focusedColor: Color) -> Self { self.focusedColor = focusedColor; return self }
 	
+	@discardableResult
+	func allowsFloatingPlaceholder(_ allowsFloatingPlaceholder: Bool) -> Self { self.allowsFloatingPlaceholder = allowsFloatingPlaceholder; return self }
 }
 
 internal final class TextFieldStore {

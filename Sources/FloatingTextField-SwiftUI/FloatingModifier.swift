@@ -22,8 +22,8 @@ extension Modifiers.Floating {
 		var floatingPlaceHolderPadding: CGFloat
 		var floatingPlaceHolderLeadingPadding: CGFloat
 		
-		
 		var id: UITextField.Identifier
+		var allowsFloatingPlaceholder: Bool
 		
 		var leftView: AnyView
 		var rightView: AnyView
@@ -38,6 +38,8 @@ extension Modifiers.Floating {
 			self.floatingPlaceholderFont = FloatingTextFieldAppearance.shared.floatingPlaceholderFont
 			self.floatingPlaceHolderPadding = FloatingTextFieldAppearance.shared.floatingPlaceHolderPadding
 			self.floatingPlaceHolderLeadingPadding = FloatingTextFieldAppearance.shared.floatingPlaceHolderLeadingPadding
+			
+			self.allowsFloatingPlaceholder = FloatingTextFieldAppearance.shared.allowsFloatingPlaceholder
 			
 			self.leftView = AnyView(erasing: EmptyView())
 			self.rightView = AnyView(erasing: EmptyView())
@@ -64,6 +66,9 @@ extension Modifiers.Floating {
 		
 		@discardableResult
 		public func floatingPlaceHolderLeadingPadding(_ floatingPlaceHolderLeadingPadding: CGFloat) -> Self { self.floatingPlaceHolderLeadingPadding = floatingPlaceHolderLeadingPadding; return self }
+		
+		@discardableResult
+		public func allowsFloatingPlaceholder(_ allowsFloatingPlaceholder: Bool) -> Self { self.allowsFloatingPlaceholder = allowsFloatingPlaceholder; return self }
 		
 		@discardableResult
 		public func leftView(_ leftView: AnyView) -> Self { self.leftView = leftView; return self }
@@ -96,9 +101,6 @@ extension Modifiers {
 		public func body(content: Content) -> some View {
 			VStack(spacing: 0) {
 				placeHolderViewIfNeeded()
-					.background(configuration.floatingPlaceholderBackgroundColor)
-					.padding(.bottom, configuration.floatingPlaceHolderPadding)
-					.padding(.leading, configuration.floatingPlaceHolderLeadingPadding)
 				HStack {
 					configuration.leftView
 					content
@@ -110,25 +112,30 @@ extension Modifiers {
 		}
 		
 		@ViewBuilder private func placeHolderViewIfNeeded() -> some View {
-			Group {
-				if let textField = TextFieldStore.value(for: self.configuration.id),
-				   let text = textField.text,
-				   let placeholder = textField.placeholder,
-				   text.count > 0 {
+			if self.configuration.allowsFloatingPlaceholder {
+				Group {
+					if let textField = TextFieldStore.value(for: self.configuration.id),
+					   let text = textField.text,
+					   let placeholder = textField.placeholder,
+					   text.count > 0 {
 
-					Text(placeholder)
-						.transition(.move(edge: .bottom).combined(with: .opacity))
-						.animation(.easeIn, value: 1)
-					
-				} else {
-					Text(" ")
-						.transition(.move(edge: .bottom).combined(with: .opacity))
-						.animation(.easeOut, value: 1)
+						Text(placeholder)
+							.transition(.move(edge: .bottom).combined(with: .opacity))
+							.animation(.easeIn, value: 1)
+						
+					} else {
+						Text(" ")
+							.transition(.move(edge: .bottom).combined(with: .opacity))
+							.animation(.easeOut, value: 1)
+					}
 				}
+				.font(configuration.floatingPlaceholderFont)
+				.foregroundColor(configuration.floatingPlaceholderColor)
+				.frame(maxWidth: .infinity, alignment: .leading)
+				.background(configuration.floatingPlaceholderBackgroundColor)
+				.padding(.bottom, configuration.floatingPlaceHolderPadding)
+				.padding(.leading, configuration.floatingPlaceHolderLeadingPadding)
 			}
-			.font(configuration.floatingPlaceholderFont)
-			.foregroundColor(configuration.floatingPlaceholderColor)
-			.frame(maxWidth: .infinity, alignment: .leading)
 		}
 	}
 }

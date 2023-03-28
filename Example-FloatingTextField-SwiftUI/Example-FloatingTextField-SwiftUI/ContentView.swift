@@ -82,7 +82,6 @@ struct ContentView: View {
 	}
 	
 	
-	
 	@ViewBuilder func floatingFocusedUnderlineTextFields() -> some View {
 		Group {
 			let placeHolder = "Name"
