@@ -43,7 +43,7 @@ public extension View {
 	
 	@ViewBuilder
 	fileprivate func drawRoundedBorder(color: Color, lineWidth: CGFloat) -> some View{
-		ZStack(alignment: .bottom) {
+		ZStack(alignment: .center) {
 			self
 			RoundedRectangle(cornerRadius: 10, style: .continuous)
 				.stroke(color, lineWidth: lineWidth)
