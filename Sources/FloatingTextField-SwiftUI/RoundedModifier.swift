@@ -11,9 +11,9 @@ import SwiftUI
 
 extension Modifiers.Rounded {
 	public  class Configuration {
-		var borderColor: Color
-		var borderWidth: CGFloat
-		var borderPadding: CGFloat
+		public private(set) var borderColor: Color
+		public private(set) var borderWidth: CGFloat
+		public private(set) var borderPadding: CGFloat
 		
 		public init() {
 			self.borderColor = FloatingTextFieldAppearance.shared.borderColor
@@ -29,7 +29,6 @@ extension Modifiers.Rounded {
 		
 		@discardableResult
 		public func borderPadding(_ borderPadding: CGFloat) -> Self { self.borderPadding = borderPadding; return self }
-		
 	}
 }
 
@@ -82,5 +81,15 @@ extension Modifiers.Rounded.Configuration: OnFocusChangeConfigurable {
 			self.borderColor = focusedConfiguration.focusedColor
 		}
 		return self
+	}
+}
+
+//MARK: Copy Support
+public extension Modifiers.Rounded.Configuration {
+	var copy: Modifiers.Rounded.Configuration {
+		return .init()
+		.borderWidth(self.borderWidth)
+		.borderColor(self.borderColor)
+		.borderPadding(self.borderPadding)
 	}
 }
